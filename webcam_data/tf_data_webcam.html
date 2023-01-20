@@ -7,7 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TensorFlowjs - tfjs-data</title>
 
-    <script src="./data-load.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+    <!-- <script src="./data-load.js" defer></script> -->
+    <!-- mobilenet -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.1"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@1.0.0"></script>
 
 
 </head>
@@ -15,6 +19,41 @@
 <body>
 
     <div id='display'></div>
+    <button id='pick'>TF.DATA.WEBCAM</button>
+
+    <script defer>
+        const videoElement = document.createElement('video');
+
+        const button = document.createElement('button');
+        const rslt = document.createElement('div');
+
+        document.body.append(videoElement, button, rslt);
+        button.textContent = "Extract Tensor"
+        const pick = document.getElementById('pick');
+
+        videoElement.width = 100;
+        videoElement.height = 100;
+
+        // tensorflow.js 가져와야 동작함
+        const main = async () => {
+            const cam = await tf.data.webcam(videoElement); // webcam 
+            const mnet = await mobilenet.load();
+            const img = await cam.capture();
+            const result = await mnet.classify(img);
+
+            img.print();
+            tf.dispose(img);
+            // cam.stop();
+
+            rslt.innerHTML = "추측 : " + result[0].className + "확률 : " + result[0].probability;
+
+        };
+
+        main();
+
+        button.addEventListener('click', () => { main(); });
+
+    </script>
 
 </body>
 

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TensorFlowjs</title>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@1.0.0"></script>
+</head>
+<body>
+
+    <input type="file" id="upFile" />
+    <img src="./dog.jpg"/>
+
+<script>
+// 파일 업로드 아직 구현안함, vue.js 이식 아직 안함
+// tesnorflow, mobilenet은 위에 포함
+
+// .env 파일은 node.js가 설치된 최상단에 위치시키고
+// process.env.key 로 호출한다.
+
+const dotenv = require("dotenv").config();
+
+const mongoose = require('mongoose')
+const USER = process.env.DB_USER
+const PWD = process.env.DB_PASS
+// const HOST = 'localhost:27017'
+const HOST = process.env.DB_HOST
+const DB = 'imgsensor'
+const mongodbURL = `mongodb://${USER}:${PWD}@${HOST}/${DB}`
+// mongoose.set('useFindAndModify', false) // 6.0부터 자동으로 관리 
+// mongoose.set('strictQuery', false) // 권장
+// mongoose.connect(mongodbURL, { useNewUrlParser: true })
+//     .then(() => console.log('접속에 성공함'))
+//     .catch((err) => console.error(err))
+
+// const Photo = require('./photo.js')
+
+// module.exports = { mongoose, Photo }
+
+
+
+// mongodb 의 함수들을 사용할수 있다.
+// async const t await fn 
+
+// <input type="file" id="myFile" />
+
+// 이미지 저장하고 추가
+// vue 에서는 method 에서 구현하며
+// dom 과 다르게 처리
+// const img = document.createElement('img');
+const img = document.querySelector('img')
+// img.src = './img.png'
+// const button = document.createElement('button');
+const rslt = document.createElement('div');
+
+document.body.append(img, rslt);
+
+
+// button.textContent = "Extract Tensor"
+// const pick = document.getElementById('pick');
+
+
+////////////////////////////////////////
+// upload 구현, img 표시 
+
+////////////////////////////////////////////////////////////////////////
+// image 인식
+
+
+// tensorflow.js 가져와야 동작함
+const prediction = async () => {
+    // webcam 
+    const mnet = await mobilenet.load();
+    const result = await mnet.classify(img);
+
+    img.print();
+    tf.dispose(img);
+    // cam.stop();
+
+    rslt.innerHTML = "추측 : " + result[0].className + "확률 : " + result[0].probability;
+
+};
+
+prediction();
+
+// button.addEventListener('click', () => { prediction(); });
+
+
+/////////////////////////////////////////////////////////
+// base64 변환
+
+// 올린 파일을 대상으로 지정.
+// 예측은 img, 저장은 input file
+var file = document.querySelector('#upFile');
+var pic_b64;
+
+// 정상 로드시 result에 인코딩 값을 저장하기
+var reader = new FileReader(file);
+reader.onload = function() {
+  pic_b64 = reader.result;
+}
+
+// 실패할 경우 에러 출력하기
+reader.onerror = function (error) {
+   console.log('Error');
+};
+
+//////////////////////////////////////////////////////////////////////////////
+// 저장 
+
+async function saveDB(pict) {
+    const spic = database.collection("save_pic");
+    const Pict = { // 객체, 스키마
+        content: pict,
+    }
+    const sav_pic = await Pict.save(); // 올라감
+    console.log(spic);
+    console.log(sav_pic);
+    // await .close();
+
+}
+
+async function referDB() {
+    const ref_db = database.collection("save_pic");
+    const ref_pic = await pict.find();
+    console.log(ref_db);
+    console.log(ref_pic);
+    // await .close();
+
+}
+
+</script>
+</body>
+</html>

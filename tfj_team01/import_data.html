@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tensorflowjs</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  </head>
+  <body>
+    <input type="file" name="" id="" onchange="readExcel();" /></br>
+    아버지 키를 입력해주세요 <input type="number" id="key">
+    <button onclick="bun()">
+      분석시작
+    </button>
+    <script>
+      
+      console.log(key.value)
+      let father = [],
+        son = [];
+      const readExcel = () => {
+        let input = this.event.target;
+        let reader = new FileReader();
+        reader.onload = function () {
+          let data = reader.result;
+          let wordBook = XLSX.read(data, { type: "binary" });
+          const x = wordBook.Sheets.train;
+
+          for (let j = 2; j < 757; j++) {
+            let line = [],
+              line2 = [];
+            line.push(x["A" + j].v);
+            line2.push(x["B" + j].v);
+            father.push(line);
+            son.push(line2);
+          }
+        };
+        reader.readAsBinaryString(input.files[0]);
+      };
+      console.log(father);
+      console.log(son);
+      function bun(){
+        let key = document.getElementById('key')
+        let kv=Number(key.value)
+        console.log(kv)
+      let xt = tf.tensor(father);
+      let yt = tf.tensor(son);
+      let X = tf.input({ shape: [1] }); 
+      let Y = tf.layers.dense({ units: 1 }).apply(X); 
+      let model = tf.model({ inputs: X, outputs: Y }); 
+      let comileParam = {
+        optimizer: tf.train.adam(),
+        loss: tf.losses.meanSquaredError,
+      }; 
+      model.compile(comileParam);
+      
+      const fitParm = {
+        epochs: 100,
+        callbacks: {
+          onEpochEnd: function (epoch, logs) {
+            console.log("epoch", epoch, logs, "RMSE=>", Math.sqrt(logs.loss));
+          },
+        },
+      };
+      const my = tf.tensor([kv])
+      model.fit(xt, yt, fitParm).then((_) => {
+        let result = model.predict(my); 
+        result.print();
+       
+      });
+    }
+    </script>
+  </body>
+</html>

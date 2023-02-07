@@ -36,7 +36,7 @@
               @click="remove(files.indexOf(file))"
               title="Remove file"
             >
-              <b class="de1">×</b>
+              <b class="de1"></b>
             </button>
             <div>{{ analysis }}</div>
             <button @click="send()">DB저장</button>
@@ -117,6 +117,7 @@ export default {
       this.files.splice(i, 1)
     },
 
+    // 하단에 간단하게 표시되는 결과값
     A() {
       /*mobilenet*/
       mobilenet.load().then((model) => {

@@ -32,6 +32,8 @@ app.use(
   })
 )
 
+// 작동하지 않음
+// api export 해야할것으로 예상.
 app.post('/mobinet', function (req, res) {
   // front 서버에서 post 방식으로 전송받음
   const A = req.body.name
@@ -42,10 +44,10 @@ app.post('/mobinet', function (req, res) {
       url: A
     }
     console.log('왔냐')
-    console.log(req.body)
+    console.log(req.body) // post 전송값을 다룰때 body
     console.log('왔냐2')
-    const new_photo = new Photo(_data)
-    const t = await new_photo.save()
+    const new_photo = new Photo(_data) // 스키마 사용
+    const t = await new_photo.save() // db에 저장함
   }
 
   main()

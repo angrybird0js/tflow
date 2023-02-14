@@ -1,5 +1,3 @@
-lines (49 sloc) 1.36 KB
-
 <template>
   <div>
     <div id="display"></div>
@@ -11,8 +9,12 @@ lines (49 sloc) 1.36 KB
 </template>
 
 <script>
-import * as tf from '@tensorflow/tfjs'
-import * as mobilenet from '@tensorflow-models/mobilenet'
+// import * as tf from '@tensorflow/tfjs'
+// import * as mobilenet from '@tensorflow-models/mobilenet'
+import tf from '@tensorflow/tfjs'
+// import mobilenet from '@tensorflow-models/mobilenet'
+import mobilenet from 'mobilenet'
+
 const VideoElement = document.createElement('video') // 캠 태그 생성
 export default {
   name: 'app',

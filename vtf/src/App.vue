@@ -2,8 +2,9 @@
   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
-    <router-link to="/mobinet">MobileNet</router-link>|
-    <router-link to="/tflow">Tensorflow</router-link>
+    <router-link to="/tflow">Page1 Tensorflow</router-link> |
+    <router-link to="/capture">Page2 CaptureCam</router-link> |
+    <router-link to="/mobilenet">Page3 MobileNet</router-link>
   </nav>
   <router-view />
 </template>

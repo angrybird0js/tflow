@@ -50,7 +50,9 @@
 
 <script>
 /* eslint-disable */
-
+// import * as tf from '@tensorflow/tfjs'
+// import * as mobilenet from '@tensorflow-models/mobilenet'
+// import mobilenet from '@tensorflow-models/mobilenet'
 import axios from 'axios'
 
 export default {

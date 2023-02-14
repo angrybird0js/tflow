@@ -12,6 +12,27 @@ const _path = path.join(__dirname, './dist')
 console.log(_path)
 
 app.use('/', express.static(_path))
+
+// proxy
+// app.all('/*', function(req, res, next){
+//   res.header("Access-Control-Allow-Origin", "*")
+//   res.header("Access-Control-Allow-Headers", "X-Requested-With")
+//   next()
+// })
+
+const cors = require('cors');
+let corsOption = {
+    origin: 'http://localhost:8080',    // 허용 주소
+    credentials: true                   // true시 설정 내용을 응답헤더에 추가해 줌
+}
+app.use(cors(corsOption));              // CORS 미들웨어 추가
+
+// 필요한곳에 추가 
+// import axios from 'axios';
+// axios.defaults.baseURL = 'http://localhost:3000';
+// axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
+// axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+
 app.use(logger('tiny'))
 
 app.use(express.json())
@@ -52,6 +73,8 @@ app.post('/mobinet', function (req, res) {
 
   main()
 })
+
+
 
 app.listen(port, () => {
   console.log(port + '에서 서버동작 완료.')
